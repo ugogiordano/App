@@ -4262,6 +4262,9 @@ function hasReportNameError(report: OnyxEntry<Report>): boolean {
  * @returns The converted mention as a full mention string or undefined if conversion is not applicable.
  */
 function addDomainToShortMention(mention: string): string | undefined {
+    currentUserPrivateDomain = Str.extractEmailDomain(currentUserEmail ?? '');
+    console.log('currentUserPrivateDomain: ', currentUserPrivateDomain)
+
     if (!Str.isValidEmail(mention) && currentUserPrivateDomain) {
         const mentionWithEmailDomain = `${mention}@${currentUserPrivateDomain}`;
         if (allPersonalDetailLogins.includes(mentionWithEmailDomain)) {
@@ -4288,8 +4291,13 @@ function completeShortMention(text: string): string {
         if (!Str.isValidMention(match)) {
             return match;
         }
+
         const mention = match.substring(1);
+        console.log('mention: ', mention)
+
         const mentionWithDomain = addDomainToShortMention(mention);
+        console.log('mentionWithDomain: ', mentionWithDomain)
+
         return mentionWithDomain ? `@${mentionWithDomain}` : match;
     });
 }

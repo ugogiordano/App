@@ -1655,7 +1655,11 @@ function handleUserDeletedLinksInHtml(newCommentText: string, originalCommentMar
         return newCommentText;
     }
 
+    console.log('handleUserDeletedLinksInHtml')
+
     const textWithMention = ReportUtils.completeShortMention(newCommentText);
+
+    console.log('textWithMention: ', textWithMention)
 
     const htmlForNewComment = Parser.replace(textWithMention, {
         extras: {videoAttributeCache},
