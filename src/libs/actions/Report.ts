@@ -3536,10 +3536,19 @@ function prepareOnboardingOptimisticData(
         reportComment: textComment.commentText,
     };
 
+    // Sign-off welcome message
+    const welcomeSignOffComment = ReportUtils.buildOptimisticAddCommentReportAction(Localize.translateLocal('onboarding.welcomeSignOffTitle'), undefined, actorAccountID, 2);
+    const welcomeSignOffCommentAction: OptimisticAddCommentReportAction = welcomeSignOffComment.reportAction;
+    const welcomeSignOffMessage = {
+        reportID: targetChatReportID,
+        reportActionID: welcomeSignOffCommentAction.reportActionID,
+        reportComment: welcomeSignOffComment.commentText,
+    };
+
     let videoCommentAction: OptimisticAddCommentReportAction | null = null;
     let videoMessage: AddCommentOrAttachementParams | null = null;
     if ('video' in data && data.video) {
-        const videoComment = ReportUtils.buildOptimisticAddCommentReportAction(CONST.ATTACHMENT_MESSAGE_TEXT, undefined, actorAccountID, 2);
+        const videoComment = ReportUtils.buildOptimisticAddCommentReportAction(CONST.ATTACHMENT_MESSAGE_TEXT, undefined, actorAccountID, 3);
         videoCommentAction = videoComment.reportAction;
         videoMessage = {
             reportID: targetChatReportID,
@@ -3947,7 +3956,7 @@ function prepareOnboardingOptimisticData(
         });
     }
 
-    guidedSetupData.push(...tasksForParameters);
+    guidedSetupData.push(...tasksForParameters, {type: 'message', ...welcomeSignOffMessage});
 
     return {optimisticData, successData, failureData, guidedSetupData, actorAccountID};
 }
